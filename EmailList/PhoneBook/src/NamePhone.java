@@ -17,7 +17,8 @@ public class NamePhone {
     public String getName(String name) {
         for (String key : phoneBook.keySet()) {
             if (name.equals(key)) {
-                System.out.println(key + " - " + phoneBook.get(key));
+                String print = key + " - " + phoneBook.get(key);
+                System.out.println(print.replaceAll("\\[|\\]", ""));
             }
         }
         return "";
@@ -26,7 +27,8 @@ public class NamePhone {
     public String getPhone(String phone) {
         for (HashSet<String> value : phoneBook.values()) {
             if (phone.equals(value)) {
-                System.out.println(phoneBook.get(value) + " - " + value);
+                String print = phoneBook.get(value) + " - " + value;
+                System.out.println(print.replaceAll("\\[|\\]", ""));
             }
         }
         return "";
