@@ -1,4 +1,7 @@
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,52 +16,51 @@ public class Main {
 
             if (text.matches(regexName)) {
                 name = text;
-
-                if (!name.equals(namePhone.phoneBook.keySet())) {
-                    namePhone.getName(name); // если контакт есть в телефонной книге, то выводит данные
-                } // если прописываю здесь else, что код ниже совсем перестает работать
-
-
-                System.out.println("Такого абонента нет в телефонной книге.");
-                System.out.println("Введите номер телефона для абонента " + "\"" + name + "\"");
-                String inputPhone = new Scanner(System.in).nextLine();
-                if (inputPhone.matches(regexPhone)) {
-                    namePhone.addNameAndPhone(name, inputPhone);
-                    System.out.println("Контакт сохранен!");
-
+                if (namePhone.phoneBook.keySet().contains(name)) {
+                    namePhone.getName(name);
+                } else {
+                    System.out.println("Такого абонента нет в телефонной книге.");
+                    System.out.println("Введите номер телефона для абонента " + "\"" + name + "\"");
+                    String inputPhone = new Scanner(System.in).nextLine();
+                    if (inputPhone.matches(regexPhone)) {
+                        namePhone.addNameAndPhone(name, inputPhone);
+                    } else {
+                        System.out.println("Неверный формат ввода");
+                    }
                 }
-
                 System.out.println();
                 System.out.println("Введите номер, имя или команду:");
                 continue;
             }
 
             if (text.matches(regexPhone)) {
-                for (String phones : namePhone.phoneBook.keySet()) {
-                    if (!text.equals(namePhone.phoneBook.keySet())) {
-                        System.out.println(namePhone.getName(phones)); // если телефон есть в телефонной книге, что выводит данные
-                    } // если прописываю здесь else, что код ниже совсем перестает работать
-                }
-
-                namePhone.getPhone(text);
-                System.out.println("Такого номера нет в телефонной книге.");
-                System.out.println("Введите имя абонента для номера " + "\"" + text + "\"");
-                String inputName = new Scanner(System.in).nextLine();
-                boolean formatName = inputName.matches(regexName);
-                if (formatName == true) {
-                    namePhone.addNameAndPhone(inputName, text);
-                    System.out.println("Контакт сохранен!");
-
+                phone = text;
+                if (namePhone.isPhoneAndNameInBook(phone)) {
+                    System.out.println(namePhone.getPhone(phone));
+                } else {
+                    System.out.println("Такого номера нет в телефонной книге.");
+                    System.out.println("Введите имя абонента для номера " + "\"" + text + "\"");
+                    String inputName = new Scanner(System.in).nextLine();
+                    boolean formatName = inputName.matches(regexName);
+                    if (formatName == true) {
+                        namePhone.addNameAndPhone(inputName, phone);
+                        System.out.println("Контакт сохранен!");
+                    } else {
+                        System.out.println("Неверный формат ввода");
+                    }
                 }
                 System.out.println();
                 System.out.println("Введите номер, имя или команду:");
                 continue;
             }
 
-
             if (text.equals("LIST")) {
-                System.out.println(namePhone);
-
+                if (namePhone.phoneBook.isEmpty()) {
+                    System.out.println("В телефонной книге пусто");
+                } else {
+                    System.out.println(namePhone);
+                }
+                System.out.println("Введите номер, имя или команду:");
             } else {
                 System.out.println("Неверный формат ввода");
                 System.out.println();

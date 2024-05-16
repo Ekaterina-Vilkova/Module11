@@ -1,17 +1,25 @@
-import java.util.HashSet;
-import java.util.TreeMap;
+import java.util.*;
 
 public class NamePhone {
 
-    TreeMap<String, HashSet<String>> phoneBook = new TreeMap<>();
+    TreeMap<String, List<String>> phoneBook = new TreeMap<>();
 
-    public void addNameAndPhone(String name, String phone) {
-        HashSet<String> number = phoneBook.get(name);
+    public boolean addNameAndPhone(String name, String phone) {
+        List<String> number = phoneBook.get(name);
         if (number == null) {
-            number = new HashSet<>();
+            number = new ArrayList<>();
             phoneBook.put(name, number);
         }
+        for (List<String> numbers : phoneBook.values()) {
+            if (numbers.contains(phone)) {
+                System.out.println("Данный номер пренадлежит другому абоненту");
+                phoneBook.remove(name);
+                return false;
+            }
+        }
         number.add(phone);
+        System.out.println("Контакт сохранен!");
+        return true;
     }
 
     public String getName(String name) {
@@ -25,7 +33,7 @@ public class NamePhone {
     }
 
     public String getPhone(String phone) {
-        for (HashSet<String> value : phoneBook.values()) {
+        for (List<String> value : phoneBook.values()) {
             if (phone.equals(value)) {
                 String print = phoneBook.get(value) + " - " + value;
                 System.out.println(print.replaceAll("\\[|\\]", ""));
@@ -33,6 +41,21 @@ public class NamePhone {
         }
         return "";
     }
+
+    public boolean isPhoneAndNameInBook(String phone) {
+        if (phoneBook.isEmpty()) {
+            return false;
+        }
+        for (Map.Entry<String, List<String>> book : phoneBook.entrySet()) {
+            if (book.getValue().contains(phone)) {
+                System.out.println(book.getKey() + " - " + phone);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public String toString() {
